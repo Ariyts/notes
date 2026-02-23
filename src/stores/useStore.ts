@@ -74,6 +74,7 @@ interface AppState {
   
   // UI Actions
   setSelectedWorkspace: (id: string | null) => void;
+  setSelectedSection: (type: WorkspaceType) => void;
   setSelectedFolder: (id: string | null) => void;
   setSelectedNote: (id: string | null) => void;
   setViewMode: (mode: ViewMode) => void;
@@ -139,6 +140,7 @@ const defaultConfig: AppConfig = {
 
 const defaultUI: UIState = {
   selectedWorkspaceId: null,
+  selectedSectionType: 'folder',
   selectedFolderId: null,
   selectedNoteId: null,
   viewMode: 'table',
@@ -162,46 +164,19 @@ const defaultSync: SyncState = {
 // Create default workspaces
 const createDefaultData = () => {
   const now = new Date().toISOString();
-  
+
   const workspaces: Workspace[] = [
     {
       id: nanoid(),
-      name: 'Notes',
+      name: 'My Workspace',
       type: 'folder',
       icon: 'FileText',
-      color: '#6b7280',
-      createdAt: now,
-      updatedAt: now,
-    },
-    {
-      id: nanoid(),
-      name: 'Prompts',
-      type: 'card',
-      icon: 'MessageSquare',
-      color: '#3b82f6',
-      createdAt: now,
-      updatedAt: now,
-    },
-    {
-      id: nanoid(),
-      name: 'Resources',
-      type: 'link',
-      icon: 'Link',
-      color: '#10b981',
-      createdAt: now,
-      updatedAt: now,
-    },
-    {
-      id: nanoid(),
-      name: 'Commands',
-      type: 'command',
-      icon: 'Terminal',
-      color: '#f59e0b',
+      color: '#6366f1',
       createdAt: now,
       updatedAt: now,
     },
   ];
-  
+
   return { workspaces };
 };
 
@@ -360,9 +335,8 @@ export const useStore = create<AppState>()(
             updatedAt: now,
           });
           
-          // For folder type, create empty NoteContent
-          const workspace = state.workspaces.find(w => w.id === workspaceId);
-          if (workspace?.type === 'folder') {
+          // For notes section, create empty NoteContent
+          if (state.ui.selectedSectionType === 'folder') {
             state.noteContents.push({
               id: nanoid(),
               noteId: id,
@@ -579,6 +553,13 @@ export const useStore = create<AppState>()(
       // UI Actions
       setSelectedWorkspace: (id) => set((state) => {
         state.ui.selectedWorkspaceId = id;
+        state.ui.selectedSectionType = 'folder';
+        state.ui.selectedFolderId = null;
+        state.ui.selectedNoteId = null;
+      }),
+
+      setSelectedSection: (type) => set((state) => {
+        state.ui.selectedSectionType = type;
         state.ui.selectedFolderId = null;
         state.ui.selectedNoteId = null;
       }),
@@ -698,7 +679,7 @@ export const useStore = create<AppState>()(
       },
     })),
     {
-      name: 'knowledge-hub-storage-v2',
+      name: 'knowledge-hub-storage-v3',
       partialize: (state) => ({
         workspaces: state.workspaces,
         folders: state.folders,

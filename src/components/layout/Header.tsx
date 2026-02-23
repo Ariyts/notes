@@ -3,7 +3,6 @@ import { Plus, RefreshCw, Search, Settings, Menu, MoreVertical, Pencil, Trash2, 
 import { useStore } from '@/stores/useStore';
 import { Button } from '@/components/ui/Button';
 import { cn } from '@/utils/cn';
-import type { WorkspaceType } from '@/types';
 
 export function Header() {
   const {
@@ -22,7 +21,6 @@ export function Header() {
   
   const [isCreating, setIsCreating] = useState(false);
   const [newWorkspaceName, setNewWorkspaceName] = useState('');
-  const [newWorkspaceType, setNewWorkspaceType] = useState<WorkspaceType>('folder');
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editName, setEditName] = useState('');
   const [menuOpenId, setMenuOpenId] = useState<string | null>(null);
@@ -40,9 +38,8 @@ export function Header() {
 
   const handleCreateWorkspace = () => {
     if (newWorkspaceName.trim()) {
-      createWorkspace(newWorkspaceName.trim(), newWorkspaceType);
+      createWorkspace(newWorkspaceName.trim(), 'folder');
       setNewWorkspaceName('');
-      setNewWorkspaceType('folder');
       setIsCreating(false);
     }
   };

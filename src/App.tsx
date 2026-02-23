@@ -64,7 +64,7 @@ export function App() {
 
       {/* Main Content */}
       <div className="flex flex-1 overflow-hidden">
-        {/* Sidebar - Layer 1: Workspaces */}
+        {/* Sidebar - Layer 1: Sections */}
         <Sidebar />
 
         {/* Folder Panel - Layer 2: Folders + Notes */}

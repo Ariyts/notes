@@ -134,6 +134,7 @@ export interface AppConfig {
 
 export interface UIState {
   selectedWorkspaceId: string | null;
+  selectedSectionType: WorkspaceType;
   selectedFolderId: string | null;
   selectedNoteId: string | null;
   viewMode: ViewMode;

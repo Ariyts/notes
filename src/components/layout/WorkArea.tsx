@@ -695,12 +695,20 @@ function CommandsView({ note, color }: { note: Note; color: string }) {
   );
 }
 
+const sectionColors: Record<string, string> = {
+  folder:  '#6b7280',
+  card:    '#3b82f6',
+  link:    '#10b981',
+  command: '#f59e0b',
+};
+
 // ==================== Main WorkArea Component ====================
 export function WorkArea() {
   const { ui, workspaces, notes } = useStore();
 
   const selectedWorkspace = workspaces.find(w => w.id === ui.selectedWorkspaceId);
   const selectedNote = notes.find(n => n.id === ui.selectedNoteId);
+  const sectionColor = sectionColors[ui.selectedSectionType];
 
   // No workspace selected
   if (!selectedWorkspace) {
@@ -708,32 +716,32 @@ export function WorkArea() {
       <div className="flex flex-1 flex-col items-center justify-center bg-gray-950 p-8 text-center">
         <FileText className="mb-4 h-12 w-12 text-gray-700" />
         <h2 className="text-xl font-semibold text-white">Select a Workspace</h2>
-        <p className="mt-2 text-gray-500">Choose a workspace from the sidebar</p>
+        <p className="mt-2 text-gray-500">Choose a workspace from the top tabs</p>
       </div>
     );
   }
 
   // No note selected
   if (!selectedNote) {
-    const Icon = typeIcons[selectedWorkspace.type];
+    const Icon = typeIcons[ui.selectedSectionType];
     return (
       <div className="flex flex-1 flex-col items-center justify-center bg-gray-950 p-8 text-center">
-        <div className="mb-4 rounded-full p-4" style={{ backgroundColor: selectedWorkspace.color + '20' }}>
-          <Icon className="h-8 w-8" style={{ color: selectedWorkspace.color }} />
+        <div className="mb-4 rounded-full p-4" style={{ backgroundColor: sectionColor + '20' }}>
+          <Icon className="h-8 w-8" style={{ color: sectionColor }} />
         </div>
-        <h3 className="text-lg font-medium text-white">No note selected</h3>
-        <p className="mt-1 text-gray-500">Select a note from the folder panel or create a new one</p>
+        <h3 className="text-lg font-medium text-white">Nothing selected</h3>
+        <p className="mt-1 text-gray-500">Select an item from the panel or create a new one</p>
       </div>
     );
   }
 
-  // Render based on workspace type
+  // Render based on selected section type
   return (
     <div className="flex flex-1 flex-col bg-gray-950">
-      {selectedWorkspace.type === 'folder' && <NoteEditor note={selectedNote} color={selectedWorkspace.color} />}
-      {selectedWorkspace.type === 'card' && <CardsView note={selectedNote} color={selectedWorkspace.color} />}
-      {selectedWorkspace.type === 'link' && <LinksView note={selectedNote} color={selectedWorkspace.color} />}
-      {selectedWorkspace.type === 'command' && <CommandsView note={selectedNote} color={selectedWorkspace.color} />}
+      {ui.selectedSectionType === 'folder'  && <NoteEditor   note={selectedNote} color={sectionColor} />}
+      {ui.selectedSectionType === 'card'    && <CardsView    note={selectedNote} color={sectionColor} />}
+      {ui.selectedSectionType === 'link'    && <LinksView    note={selectedNote} color={sectionColor} />}
+      {ui.selectedSectionType === 'command' && <CommandsView note={selectedNote} color={sectionColor} />}
     </div>
   );
 }

@@ -1,0 +1,9 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Debug in Firefox" type="JavascriptDebugType" factoryName="JavaScript Debug">
+    <option name="uri" value="http://localhost:5173/" />
+    <option name="engineId" value="firefoxDebug" />
+    <method v="2">
+      <option name="RunConfigurationTask" enabled="true" run_configuration_name="Vite Dev Server" run_configuration_type="js.build_tools.npm" />
+    </method>
+  </configuration>
+</component>
